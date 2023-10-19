@@ -1,0 +1,13 @@
+#vscode
+.vscode
+
+#virtual environment
+.venv
+
+#environment variables
+.env
+
+#packages/building
+*.egg-info
+*/__pycache__/*
+
