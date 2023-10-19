@@ -22,6 +22,7 @@ def check_doubles(input):
     
     return(check_doubles(input[1:]))
 
+#returns false if illegal doublet present
 def check_illegal(input):
     illegal = {'ab', 'cd', 'pq', 'xy'}
     
@@ -33,6 +34,24 @@ def check_illegal(input):
     
     return True
 
+#Returns True if there is a repeated doublet 
+def any_two(input):
+    for i in range(len(input) - 1):
+        #iterates over every possible doublet of adjacent characters
+        combined = input[i] + input[i+1]
+        split_list = input.split(combined)
+        
+        if len(split_list) - 1 >= 2:
+            return True
+    return False
+
+#Returns True if the character after next is the same
+def skip_one(input):
+    for i in range(0, len(input) - 2):
+        if input[i] == input[i+2]:
+            return True
+    return False
+
 def count_nice(input):
     nice = 0
     
@@ -41,5 +60,16 @@ def count_nice(input):
             nice+=1
     
     print(f"There are originally {nice} nice strings.")
+    return
+    
+def nicer(input):
+    nice = 0
+    
+    for line in input.splitlines():
+        if (skip_one(line) and any_two(line)):
+            nice+=1
+    
+    print(f"There are a revised {nice} nice strings.")
         
 count_nice(input)
+nicer(input)
