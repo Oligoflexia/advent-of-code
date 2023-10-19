@@ -29,7 +29,7 @@ def get_input(year, day):
         input = response.text
         print("Creating a datafile!")
     
-    with open(data_file_path, "w") as f:
-        f.write(input)
+    with open(data_file_path, "w", newline='') as f:
+        f.write(input.rstrip('\n'))
     
     return input
