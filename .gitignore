@@ -6,6 +6,7 @@
 
 #environment variables
 .env
+.DS_Store
 
 #packages/building
 *.egg-info
