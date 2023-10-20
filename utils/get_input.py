@@ -15,6 +15,8 @@ def get_input(year, day):
     cookie = os.getenv('SESSION_COOKIE')
     cookies = {'session': cookie}
     
+    headers = {'User-Agent': 'github.com/Oligoflexia/advent-of-code by Oligoflexia'}
+    
     data_file_name = str(day) + ".txt"
     data_file_path = os.path.join(str(year), 'data', data_file_name)
     
@@ -25,7 +27,7 @@ def get_input(year, day):
             input = f.read()
     else:
         print("Did not find puzzle input")
-        response = requests.get(url, cookies=cookies)
+        response = requests.get(url, headers=headers, cookies=cookies)
         input = response.text
         print("Creating a datafile!")
     
