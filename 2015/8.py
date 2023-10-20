@@ -7,24 +7,35 @@ mem = 0
 modified = []
 
 for line in input.splitlines():
-    literal += len(line)
+    literal += len(repr(line))
     
-    #running into issues becuase iterating over a modified string. Need to work on a copy. 
-    for index, character in enumerate(line[:-1]):
-        if character == '\\':
-            if line[index + 1] == '\\':
-                line = line.replace('\\\\', '$', 1)
-                print(line)
-            elif line[index + 1] == "\\\"":
-                line = line.replace('\\\"', '$', 1)
-                print(line)
-            elif line[index + 1] == "x":
-                #convert - think about this one
-                pattern = f"\\x{line[index+2]}{line[index+3]}"
-                line = line.replace(pattern, '$', 1)
-                print(line)
-
-
-         
-        
+def string_iterator(string:str, is_literal=False) -> str:
+    if not is_literal:
+        string = repr(string)[1:-1]
+    
+    new_string = ''
+    skip = False
+    
+    for index, char in enumerate(string[:-1]):
+        if skip:
+            skip = False
+            continue
+        next_char = string[index + 1]
+        if char == '\\' and next_char == '\\':
+            new_string += '$'
+            skip = True
+        else:
+            new_string += char
             
+    new_string += string[-1] if not skip else ''
+    print(new_string)
+
+    if new_string != string:
+        return string_iterator(new_string, is_literal=True)
+    else:
+        return new_string
+
+result = string_iterator("byc\x9dyxuafof\\\xa6uf\\axfozomj\\olh\x6a")
+print("Final result:", result)
+
+
