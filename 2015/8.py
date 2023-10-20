@@ -1,41 +1,38 @@
 from utils.get_input import get_input
+import ast
 
 input = get_input(2015, 8)
 
-literal = 0
+lit = 0
 mem = 0
-modified = []
+exp_lit = 0
+
+
 
 for line in input.splitlines():
-    literal += len(repr(line))
+    lit += len(line)
+    print(f"{line} ::: lit: +{len(line)} ::: total_lit: {lit}")
     
-def string_iterator(string:str, is_literal=False) -> str:
-    if not is_literal:
-        string = repr(string)[1:-1]
+    mem += len(ast.literal_eval(line))
+    print(f"{ast.literal_eval(line)} ::: mem: +{len(ast.literal_eval(line))} ::: total_mem: {mem}")
+    print("\n")
+
+print(f"The difference between the # of literal chars and those saved in mem is {lit-mem}")
+
+for line in input.splitlines():
+    formatted = repr(line)[1:-1]
+    exp_lit += len(formatted)
+    print(f"{formatted} ::: lit: +{len(formatted)} ::: total_exp_lit: {exp_lit}")
+    print("\n")
+  
+print(f"The difference between the # of original vs modified literal chars is: {exp_lit-lit}")
+
+print(r'"aaa\"aaa"')
+print(len(r'"aaa\"aaa"'))
+print("\n")
+
+print(repr(r'"aaa\"aaa"'))
+print(len(repr(r'"aaa\"aaa"')))
+print("\n")
     
-    new_string = ''
-    skip = False
     
-    for index, char in enumerate(string[:-1]):
-        if skip:
-            skip = False
-            continue
-        next_char = string[index + 1]
-        if char == '\\' and next_char == '\\':
-            new_string += '$'
-            skip = True
-        else:
-            new_string += char
-            
-    new_string += string[-1] if not skip else ''
-    print(new_string)
-
-    if new_string != string:
-        return string_iterator(new_string, is_literal=True)
-    else:
-        return new_string
-
-result = string_iterator("byc\x9dyxuafof\\\xa6uf\\axfozomj\\olh\x6a")
-print("Final result:", result)
-
-
