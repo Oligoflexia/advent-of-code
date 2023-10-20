@@ -8,7 +8,6 @@ mem = 0
 exp_lit = 0
 
 
-
 for line in input.splitlines():
     lit += len(line)
     print(f"{line} ::: lit: +{len(line)} ::: total_lit: {lit}")
@@ -19,20 +18,33 @@ for line in input.splitlines():
 
 print(f"The difference between the # of literal chars and those saved in mem is {lit-mem}")
 
+def go_up(line):
+    charlist = list(line)
+    insert_idx = []
+    
+    for index, char in enumerate(charlist):
+        if char == '\\' or char == '"':
+            insert_idx.append(index)
+    
+    print(insert_idx)
+    
+    def insert_multiple(lst, char, index):
+        for index in sorted(index, reverse=True):
+            lst.insert(index, char)
+    
+    insert_multiple(charlist, '\\', insert_idx)
+    
+    insert_multiple(charlist, '"', [0, 9])
+    
+    global exp_lit 
+    exp_lit += len(charlist)
+    
+    
+
 for line in input.splitlines():
-    formatted = repr(line)[1:-1]
-    exp_lit += len(formatted)
-    print(f"{formatted} ::: lit: +{len(formatted)} ::: total_exp_lit: {exp_lit}")
-    print("\n")
-  
-print(f"The difference between the # of original vs modified literal chars is: {exp_lit-lit}")
+    go_up(line)        
 
-print(r'"aaa\"aaa"')
-print(len(r'"aaa\"aaa"'))
-print("\n")
+print(exp_lit)
 
-print(repr(r'"aaa\"aaa"'))
-print(len(repr(r'"aaa\"aaa"')))
-print("\n")
-    
-    
+print(f"The difference is {exp_lit - lit}!")
+
