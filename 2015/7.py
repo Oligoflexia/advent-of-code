@@ -53,12 +53,17 @@ def solver(string):
     
     return instructions[string]['weight']
 
-        
-print(solver('a'))
+a_weight = solver('a')
+print(f"The weight of wire 'a' is {a_weight}.")
     
-        
-        
-        
+for line in input.splitlines():
+    commands = line.split(" ")
+    instructions[commands[-1]] = {'weight': None, 'instructions': commands[:-2]}
+
+instructions['b']['weight'] = a_weight
+
+a_new = solver('a')
+print(f"The weight of wire 'a' is {a_new}.")
     
             
         
