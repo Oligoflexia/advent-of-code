@@ -1,15 +1,13 @@
 from utils.get_input import get_input
-import numpy as np
 
 input = get_input(2015, 9)
-
-nodes = {}
-node_names = set()
 
 class Node:
     def __init__(self, name, edges=None):
         self.name = name
         self.edges = edges if edges is not None else {}
+
+nodes = {}
 
 for line in input.splitlines():
     data = line.split(" ")
@@ -26,40 +24,41 @@ for line in input.splitlines():
     nodes[n1].edges[n2] = distance
     nodes[n2].edges[n1] = distance
     
-for n in node_names:
+for n in nodes:
     obj = nodes[n]
     print(f"{obj.name}: {obj.edges}")
     
-def solve(curr, not_visited, path):
-    if len(not_visited) == 0:
-        return path
+def solve(graph, start, visited=set()):
+    if len(visited) == len(graph):
+        return 0, []
     
-    path.append(curr.name)
-    not_visited.remove(curr.name)
+    min_d = float('inf')
+    path = []
     
-    if not_visited:
-        next_node = min((k for k in curr.edges.keys() if k in not_visited), key=curr.edges.get)
-        curr = nodes[next_node]
-        return solve(curr, not_visited, path)
-    else:
-        return path
-    
-start_node = nodes[next(iter(nodes.keys()))]
-not_visited = set(nodes.keys())
-path = []
-result = solve(start_node, not_visited, path)
+    for n, d in graph[start].edges.items():
+        if n not in visited:
+            visited.add(n)
+            remaining_distance, remaining_path = solve(graph, n, visited)
+            visited.remove(n)   
+             
+            total_distance = d + remaining_distance
+            if total_distance < min_d:
+                min_d = total_distance
+                path = [n] + remaining_path
+            
+    return min_d, path
 
-print(result)
+global_optima = float('inf')
+g_path = []
 
-total = 0
+for start_node in nodes.keys():
+    min_d, path = solve(nodes, start_node, {start_node})
+    if min_d < global_optima:
+        global_optima = min_d
+        g_path = [start_node] + path
 
-for i in range(len(result) - 1):
-    n1 = nodes[result[i]]
-    n2 = nodes[result[i+1]]
-    
-    total += n1.edges[n2.name]
-
-print(f"total distance is {total}KM")
+print(f"Optimal shortest path is {global_optima} KM")
+print(f"The path taken is {' --> '.join(g_path)}")
     
     
     
