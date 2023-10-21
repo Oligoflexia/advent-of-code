@@ -24,9 +24,9 @@ for line in input.splitlines():
     nodes[n1].edges[n2] = distance
     nodes[n2].edges[n1] = distance
     
-for n in nodes:
-    obj = nodes[n]
-    print(f"{obj.name}: {obj.edges}")
+# for n in nodes:
+#     obj = nodes[n]
+#     print(f"{obj.name}: {obj.edges}")
     
 def solve(graph, start, visited=set()):
     if len(visited) == len(graph):
@@ -59,7 +59,39 @@ for start_node in nodes.keys():
 
 print(f"Optimal shortest path is {global_optima} KM")
 print(f"The path taken is {' --> '.join(g_path)}")
+
+
+def solve_max(graph, start, visited=set()):
+    if len(visited) == len(graph):
+        return 0, []
     
+    max_d = float('-inf')
+    path = []
+    
+    for n, d in graph[start].edges.items():
+        if n not in visited:
+            visited.add(n)
+            remaining_distance, remaining_path = solve_max(graph, n, visited)
+            visited.remove(n)   
+             
+            total_distance = d + remaining_distance
+            if total_distance > max_d:
+                max_d = total_distance
+                path = [n] + remaining_path
+            
+    return max_d, path
+
+global_maxima = float('-inf')
+gm_path = []
+
+for start_node in nodes.keys():
+    max_d, path = solve_max(nodes, start_node, {start_node})
+    if max_d > global_maxima:
+        global_maxima = max_d
+        gm_path = [start_node] + path
+
+print(f"The least optimal path is {global_maxima} KM")
+print(f"The path taken is {' --> '.join(gm_path)}")
     
     
 
