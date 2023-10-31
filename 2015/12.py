@@ -21,4 +21,3 @@ def no_red(s:str) -> int:
     return str_sum(new)
 
 print(f"The sum of all the integers in the input is: {no_red(input)}")
-
