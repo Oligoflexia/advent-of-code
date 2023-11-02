@@ -29,10 +29,7 @@ def calculate_scores():
             
             for coord in coords:
                 if 0 <= coord[0] < len(grid) and 0 <= coord[1] < len(row):
-                    try:
                         e_score += grid[coord[0]][coord[1]]
-                    except IndexError:
-                        e_score += 0
             
             scores[r_ind][e_ind] = e_score
 
