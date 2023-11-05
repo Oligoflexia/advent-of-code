@@ -9,9 +9,10 @@ replacements = {}
 for line in input.splitlines()[:-2]:
     original, _, replaced = line.split(" ")
     
-    if replaced in replacements:
-        raise ValueError("Patterns are not unique")
-    replacements[replaced] = original
+    if original not in replacements:
+        replacements[original] = []
+        replacements[original].append(replaced)
+    else: replacements[original].append(replaced)
 
 query_str += input.splitlines()[-1:][0]
 
@@ -29,11 +30,12 @@ def replacer(instructions:tuple, str=query_str) -> list:
 def solver() -> int:
     unique_molecules = set()
     
-    for key in replacements:
-        molecules = replacer((replacements[key], key))
+    for key, value in replacements.items():
+        for element in value:
+            molecules = replacer((key, element))
         
-        for molecule in molecules:
-            unique_molecules.add(molecule)
+            for molecule in molecules:
+                unique_molecules.add(molecule)
     
     return(len(unique_molecules))
 
@@ -41,39 +43,35 @@ ans = solver()
 
 print(f"The instruction set yields {ans} unique molecules from the starting medical molecule")
 
-#Takes a query string and returns the shortest string formed in 1 step
-def backwards(pattern:str) -> str:
-    molecules = []
-    shortest = ""
-    
-    for patt in [key for key in replacements if key in pattern]:
-        mols = replacer((patt, replacements[patt]), pattern)
+# Each substitution takes 1 element -> 2 or more.
+# If we assume every substitution added 2 elements, then going backwards will require total_element - 1 steps
+# Let X be any element that is not e, Rn, Ar, or Y
+# X -> XX and when going backward (XX)XX -> (YX)X -> (ZX) -> X
+# This should be the theoretical maximum number of steps
 
-        for mol in mols:
-            molecules.append(mol)
-    
-    min = float('inf')
-    for mol in molecules:
-        if len(mol) < min:
-            min = len(mol)
-            shortest = mol
-    
-    return shortest
+elements = len(re.findall(r'[A-Z][a-z]?', query_str))
+# 292 total elements - 1 = 291
 
-def back_solver(num:int, pattern:str) -> str:
-    patt = pattern
-    
-    for i in range(num):
-        patt = backwards(patt)
-    
-    return patt
+# Notice that Rn...Ar substitutions always appear together. There is no Ar added without a corresponding Rn.
+# These are also final. Once an Rn or Ar is added there is no rule to replace it.
+# Each one of these substitutions goes from X -> X Rn X Ar, for 2 unaccounted elements per substitution/pair
+# so we subtract 2 * #Rn...Ar pairs from the maximum steps 
 
-print(back_solver(201, query_str))
-    
-    
+#sanity check
+if query_str.count('Ar') == query_str.count('Rn'):
+    pairs = query_str.count('Ar')
+    # 36 * 2 = 72
 
-        
-        
-    
-    
-    
+# Notice that the Rn ... Ar substitution can also introduce a Y character
+# In this case the substitution becomes X -> X Rn X Y X Ar or X -> X Rn X Y X Y X Ar
+# The Rn and Ar is already accounted for, as is the first 2 Xs. 
+# Every Y character introduces another X character however.
+# We subtract double the number of Ys to deal with this
+
+ys = query_str.count('Y')
+# 6 * 2 = 12
+
+def minimum_steps(e, RnAr, Y) -> int:
+    return e - 1 - (2 * RnAr) - (2 * Y)
+
+print(f"The minimum number of substitutions required to reach 'e' from the medicine molecule is {minimum_steps(elements, pairs, ys)}")
