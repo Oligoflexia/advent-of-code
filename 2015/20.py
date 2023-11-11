@@ -1,4 +1,4 @@
-from utils.get_input import get_input
+from utils.helpers import get_input
 
 input = int(get_input(2015, 20))
 

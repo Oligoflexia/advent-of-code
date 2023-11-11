@@ -35,3 +35,5 @@ def get_input(year, day):
         f.write(input.rstrip('\n'))
     
     return input
+
+

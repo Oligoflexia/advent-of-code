@@ -1,5 +1,5 @@
 import re
-from utils.get_input import get_input
+from utils.helpers import get_input
 
 input = get_input(2015, 25)
 row, column = tuple(re.findall(r'\d+', input))
