@@ -1,6 +1,4 @@
 from utils.helpers import get_input
-from collections import namedtuple
-
 
 input = get_input(2016, 1)
 
