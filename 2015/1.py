@@ -1,6 +1,6 @@
-from utils.helpers import get_input
+from utils import helpers
 
-input_str = get_input(2015, 1)
+input_str = helpers.get_input(2015, 1)
 
 # Time complexity: O(n)
 # 
@@ -28,6 +28,6 @@ def when_basement(input_str:str) -> int:
         floor += 1 if char == '(' else -1
         if floor < 0: return i
     return -1
-    
+
 print(final_floor(input_str))
 print(when_basement(input_str))
