@@ -22,26 +22,46 @@ for step in steps:
         a, b = step[0].split("=")
         instructions.append([a, b, step[1]])
 
-def rect(w:int, h:int, grd:list[int]) -> list[int]:
+def rect(w:int, h:int, grd:list[int], grid_l:int = 50) -> list[int]:
     for row in range(h):
         for col in range(w):
-            grd[(row*50)+col] = 1
-    
-    return grd
+            grd[(row*grid_l)+col] = 1
 
-def row_rotate(row:int, shift:int, grd:list[int]) -> list[int]:
-    grd_cpy = grd[row*50:(row*50)+50].copy()
+def row_rotate(row:int, shift:int, grd:list[int], grid_l:int = 50) -> list[int]:
+    grd_cpy = grd[row*grid_l:(row*grid_l)+grid_l].copy()
      
-    for i, element in enumerate(grd_cpy):
-        if element == 1:
-            grd[row*50+i] = 0
-            grd[row*50+((i+shift)%50)] = 1
+    for i in range(len(grd_cpy)):
+            grd[row*grid_l+(i+shift)%grid_l] = grd_cpy[i]
+
+def col_rotate(col:int, shift:int, grd:list[int], grid_l:int = 50, grid_h:int = 6) -> list[int]:
+    grd_cpy = grd.copy()
     
-    return grd
+    for i in range(col, len(grd), grid_l):
+        grd[(i+(shift*grid_l))%(grid_l*grid_h)] = grd_cpy[i]
+
+def solve(grd, ins_list) -> int:
+    for inst in ins_list:
+        match inst[0]:
+            case 'y':
+                row_rotate(int(inst[1]), int(inst[2]), grd)
+            case 'x':
+                col_rotate(int(inst[1]), int(inst[2]), grd)
+            case 'rect':
+                rect(int(inst[1]), int(inst[2]), grd)
+
+    return sum(grd)
+
+print(f"There are {solve(grid, instructions)} lit pixels after swiping the card \n")
+
+decoded_grid = ["#" if _ == 1 else "." for _ in grid]
+print("The final code on the screen is:")
+print("".join(decoded_grid[:50]))
+print("".join(decoded_grid[50:100]))
+print("".join(decoded_grid[100:150]))
+print("".join(decoded_grid[150:200]))
+print("".join(decoded_grid[200:250]))
+print("".join(decoded_grid[250:300]))
 
 
-    
-
-    
     
 
