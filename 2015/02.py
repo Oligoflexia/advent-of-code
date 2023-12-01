@@ -1,6 +1,6 @@
 from utils.helpers import get_input
 
-input = get_input(2015, 2)
+input = get_input(2, 2015)
 
 def present_area(l, w, h):
     smallest = min(l*w, l*h, w*h)
