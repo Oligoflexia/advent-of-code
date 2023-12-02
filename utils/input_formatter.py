@@ -7,7 +7,7 @@ class StringInput():
 
     def print_input(self):
         print(self.input)
-        print(f"\n# of characters: {len(self.input)}")
+        print(f"\n# of characters: {len(self.input)}\n")
 
     @classmethod
     def return_input(cls, day: int, year: int):
@@ -23,7 +23,7 @@ class SplitStringInput(StringInput):
     def print_input(self):
         for string in self.input:
             print(string)
-        print(f"\n# of lines: {len(self.input)}")
+        print(f"\n# of lines: {len(self.input)}\n")
 
 
 class IntInput(StringInput):
@@ -43,4 +43,4 @@ class SplitIntInput(StringInput):
     def print_input(self):
         for integer in self.input:
             print(integer)
-        print(f"\n# of lines: {len(self.input)}")
+        print(f"\n# of lines: {len(self.input)}\n")
