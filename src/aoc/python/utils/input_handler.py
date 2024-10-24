@@ -69,7 +69,7 @@ class InputHandler:
         self._conn = None
 
     def __enter__(self) -> "InputHandler":
-        self._conn = self.__get_db_connection("inputs.db")
+        self._conn = self.__get_db_connection(self._db_name)
 
         return self
 
