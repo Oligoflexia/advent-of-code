@@ -1,41 +1,33 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-name = "Soup-Advent-of-Code"
-version = "0.1a1"
-dependencies = [
-    "certifi==2023.7.22",
-    "charset-normalizer==3.3.0",
-    "idna==3.4",
-    "numpy==1.26.1",
-    "python-dotenv==1.0.0",
-    "requests==2.31.0",
-    "urllib3==2.0.7",
-]
-requires-python = ">=3.10"
-authors = [{ name = "Souvik Maiti", email = "souvik.maiti1@ucalgary.ca" }]
-description = "Soup's Solutions to Advent of Code puzzles."
+name = "soup-aoc"
+description = "Python solutions for the yearly Advent of Code puzzles."
+version = "0.0.1-a"
 readme = "README.rst"
-license = { file = "LICENSE" }
-keywords = ["Advent of Code", "Python", "algorithms", "puzzles", "solutions"]
+license = "MIT"
+requires-python = ">=3.11"
+keywords = ["Advent of Code", "algorithms", "puzzles"]
+authors = [
+    { name = "Souvik Maiti", email = "souvik.maiti1@ucalgary.ca" }
+]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Education",
-    "Natural Language :: English",
-    "Operating System :: Unix",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: Implementation :: CPython",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Games/Entertainment :: Puzzle Games",
+]
+dependencies = [
+    "python-dotenv",
+    "requests",
 ]
 
 [project.urls]
-"Advent of Code Site" = "https://adventofcode.com"
-"Repository" = "https://github.com/Oligoflexia/advent-of-code"
+"Advent of Code Homepage" = "https://adventofcode.com"
+"Solution Repository" = "https://github.com/Oligoflexia/advent-of-code"
 
-[project.scripts]
-aoc = "utils.cli:aoc_main"
-
-[tool.setuptools]
-packages = ["utils", "utils.cli"]
+[tool.hatch.build.targets.wheel]
+packages = ["src/aoc/python"]

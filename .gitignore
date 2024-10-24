@@ -11,8 +11,8 @@
 #packages/building
 *.egg-info
 */__pycache__/*
+*.pyc
 
 #data
-**/data/
-
+inputs.db
 scratch.ipynb
